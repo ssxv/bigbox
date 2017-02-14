@@ -1,0 +1,349 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>BigBox</title>
+<style>
+
+body{
+    letter-spacing: 0.02em;
+	font-size: 1.5em;
+    background-color: #000000;
+    color: #ffffff;
+}
+table{
+	margin: 0px auto;
+}
+img{
+	width: 100%;
+}
+form{
+	margin:0px auto;
+}
+#header-table{
+	width: 100%;
+}
+#score{
+	text-align: left;
+	padding-bottom:0.2em;
+}
+#timer{
+	text-align: right;
+	padding-bottom:0.2em;
+}
+#res{
+    text-align:center;
+	margin-top: 1.2em;
+	font-size: 1.5em;
+}
+#header{
+    margin-top: 0.5em;
+	font-size: 1.7em;
+}
+#hint{
+	margin-top: 1.5em;
+	color: #2ECC71;
+}
+#ipbox{
+	width: 100%;
+	height: 1.5em;
+	font-size: 1.1em;
+	margin-top: 0.2em;
+	color: #2ECC71;
+}
+#submitbutton{
+	background:#2ECC71;
+	text-align:center;
+	margin-top: 0.2em;
+	width: 100%;
+	padding: 8px 0em;
+	font-size: 1.3em;
+	text-decoration: none;
+	color: #fff;
+	display: block;
+	border: 2px solid #2ECC71;
+}
+#scorebutton{
+	background:#F1C40F;
+	text-align:center;
+	width: 100%;
+	font-size: 1em;
+	text-decoration: none;
+	color: #fff;
+	display: block;
+	border: 0px solid #000000;
+}
+#restartbutton{
+	background:#E74C3C;
+	text-align:center;
+	width: 100%;
+	font-size: 1em;
+	text-decoration: none;
+	color: #fff;
+	display: block;
+	border: 2px solid #E74C3C;
+}
+#infobutton{
+	background:#AAB7B8;
+	text-align:center;
+	width: 100%;
+	font-size: 1em;
+	text-decoration: none;
+	color: #fff;
+	display: block;
+	border: 2px solid #AAB7B8;
+}
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    width: 180px;
+    top: 100%;
+    right: 100%; 
+    margin-left: -60px;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+</style>	
+</head>
+<body onload="setup()">
+    <table id="header-table">
+		<tr>
+			<td>
+				<button id="scorebutton" onclick="getscore()">Scoreboard</button>
+			</td>
+			<td>
+				<a href="" id="restartbutton">Restart</a>
+			</td>
+			<td>
+				<div class="tooltip" id="infobutton">i
+					<span class="tooltiptext">Click on the biggest box everytime to gain score and gain time</span>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<table id="play-table">
+		<tr>
+			<td id="score" colspan="2">Score : 0</td>
+			<td id="timer" colspan="2">Time : 10</td>
+		</tr>	
+		<tr>
+			<td>
+				<img id="i1" onclick="score(1)">
+			</td>
+			<td>
+				<img id="i2" onclick="score(2)">
+			</td>
+			<td>
+				<img id="i3" onclick="score(3)">
+			</td>
+			<td>
+				<img id="i4" onclick="score(4)">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<img id="i5" onclick="score(5)">
+			</td>
+			<td>
+				<img id="i6" onclick="score(6)">
+			</td>
+			<td>
+				<img id="i7" onclick="score(7)">
+			</td>
+			<td>
+				<img id="i8" onclick="score(8)">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<img id="i9" onclick="score(9)">
+			</td>
+			<td>
+				<img id="i10" onclick="score(10)">
+			</td>
+			<td>
+				<img id="i11" onclick="score(11)">
+			</td>
+			<td>
+				<img id="i12" onclick="score(12)">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<img id="i13" onclick="score(13)">
+			</td>
+			<td>
+				<img id="i14" onclick="score(14)">
+			</td>
+			<td>
+				<img id="i15" onclick="score(15)">
+			</td>
+			<td>
+				<img id="i16" onclick="score(16)">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<img id="i17" onclick="score(17)">
+			</td>
+			<td>
+				<img id="i18" onclick="score(18)">
+			</td>
+			<td>
+				<img id="i19" onclick="score(19)">
+			</td>
+			<td>
+				<img id="i20" onclick="score(20)">
+			</td>
+		</tr>
+	</table>
+	
+	<div id="result" align="center"></div>
+	
+	<form action="/upload" method="post" id="upload">
+	</form>
+<script>
+
+//game variables
+var bigid;
+var first = 1;
+var point = 0;
+var time = 10;
+
+function setup(){
+	var i,j;
+	for(i=1;i<=20;i++){
+	j = Math.floor((Math.random() * 6) + 1);
+	document.getElementById("i"+i).src = "images/"+j+".png";
+	}
+	i = Math.floor((Math.random() * 20) + 1);
+	document.getElementById("i"+i).src = "images/big.png";
+	bigid = i;
+}
+
+function score(x){
+	if(first==1){
+	    if (bigid == x) {
+	        setup();
+	        document.getElementById("score").innerHTML = "Score : " + ++point;
+	        starttimer();
+	        first = 0;
+	    }
+	} else {
+		if(bigid==x && time>0){
+			setup();
+			document.getElementById("score").innerHTML = "Score : "+ ++point;
+			++time;
+		}		
+	}
+}
+
+function remainingtime(){
+	if(time>0){
+		document.getElementById("timer").innerHTML = "Time : "+ --time;
+	}else{
+		var elem = document.getElementById("play-table");
+		elem.parentNode.removeChild(elem);
+	    
+		var ni = document.getElementById("result");
+		var divTag = document.createElement("div"); 
+		divTag.setAttribute("align", "center"); 
+		divTag.id = "res";
+		divTag.innerHTML = "Your Score : " + point;
+		ni.appendChild(divTag); 
+
+		var ni = document.getElementById("upload");
+		
+		var scored = document.createElement("input");
+		scored.name = "score";
+		scored.type ="hidden";
+		scored.value = point;
+		ni.appendChild(scored);
+		
+		var hint = document.createElement("div");
+		hint.setAttribute("align", "left");
+		hint.id = "hint";
+		hint.innerHTML = "Enter your name :";
+		ni.appendChild(hint);
+		
+		var namebox = document.createElement("input");
+		namebox.setAttribute("align", "center"); 
+		namebox.type = "text";
+		namebox.maxlength = "29";
+		namebox.id = "ipbox";
+		namebox.name= "name";
+		ni.appendChild(namebox); 
+		
+		var divTag = document.createElement("input");
+		divTag.setAttribute("align", "center"); 
+		divTag.type = "submit";
+		divTag.id = "submitbutton";
+		divTag.value = "Upload score"
+		ni.appendChild(divTag); 
+		 
+    }
+}
+
+function starttimer(){
+	setInterval('remainingtime()', 1000);
+}
+
+var clear = true;
+
+function clear(obj)
+{
+	if(clear)
+	{
+		obj.value = '';
+		clear = false;
+	}
+}
+
+function getscore(){
+	xmlHttp = new XMLHttpRequest();
+	var url = "http://10.88.195.32:3000/getscore";
+	xmlHttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var jsonData = JSON.parse(this.responseText);
+			var dispData = "";
+			
+			
+			for( var i = 0 ; i < jsonData.length ; i++){
+				dispData = dispData + jsonData[i].name + "  -  " + jsonData[i].score + "<br>";
+			}
+			
+			var elem = document.getElementById("play-table");
+			elem.parentNode.removeChild(elem);
+			
+			var ni = document.getElementById("result");
+			var divTag = document.createElement("div"); 
+			divTag.id = "res";
+			divTag.innerHTML = dispData;
+			ni.appendChild(divTag); 
+
+        }
+    };
+	xmlHttp.open("GET", url, true);
+	xmlHttp.send();
+}
+
+</script>	
+</body>
+</html>

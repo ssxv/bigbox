@@ -1,0 +1,24 @@
+{
+  "name": "bigbox",
+  "version": "1.0.0",
+  "description": "simple taping game, using node, mongo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ssxv/bigbox.git"
+  },
+  "author": "satyendra singh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ssxv/bigbox/issues"
+  },
+  "homepage": "https://github.com/ssxv/bigbox#readme",
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "express": "^4.14.1",
+    "mongodb": "^2.2.23"
+  }
+}
